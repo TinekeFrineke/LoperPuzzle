@@ -3,11 +3,12 @@
 
 #include <iostream>
 
-#include "Board.h"
+#include "Puzzle.h"
 
 int main()
 {
-
+  Puzzle puzzle;
+  puzzle.Solve();
   return 0;
 }
 

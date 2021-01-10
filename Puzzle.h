@@ -4,6 +4,7 @@
 
 #include "Board.h"
 
+
 class Puzzle
 {
 public:
@@ -11,15 +12,19 @@ public:
   using Moves = std::vector<Move>;
 
   using LoperBoard = Board<4, 5>;
+
+  using LoperBoardSet = std::set <LoperBoard>;
+
+
   Puzzle();
 
-  bool Move();
+  bool MakeMove(const Move& move);
   bool Solve();
 
 private:
-  bool Solve(std::set<LoperBoard>& alreadyDone, Moves& moves);
+  bool Solve(LoperBoardSet& alreadyDone, Moves& moves, Loper::Colour startColour);
+  bool UndoMove(const Move& move);
 
   LoperBoard startboard;
   LoperBoard targetboard;
 };
-
