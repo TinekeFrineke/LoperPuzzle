@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoperPuzzle", "LoperPuzzle.vcxproj", "{2A9E2D81-77EC-4F4C-AEB0-3CE6BF1AFF23}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoperPuzzleTest", "..\LoperPuzzleTest\LoperPuzzleTest.vcxproj", "{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{2A9E2D81-77EC-4F4C-AEB0-3CE6BF1AFF23}.Release|x64.Build.0 = Release|x64
 		{2A9E2D81-77EC-4F4C-AEB0-3CE6BF1AFF23}.Release|x86.ActiveCfg = Release|Win32
 		{2A9E2D81-77EC-4F4C-AEB0-3CE6BF1AFF23}.Release|x86.Build.0 = Release|Win32
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Debug|x64.ActiveCfg = Debug|x64
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Debug|x64.Build.0 = Debug|x64
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Debug|x86.ActiveCfg = Debug|Win32
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Debug|x86.Build.0 = Debug|Win32
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Release|x64.ActiveCfg = Release|x64
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Release|x64.Build.0 = Release|x64
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Release|x86.ActiveCfg = Release|Win32
+		{5CCEF49F-1BA8-44A3-896E-E882CDB743CB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

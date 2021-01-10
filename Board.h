@@ -17,50 +17,22 @@ bool IsValid(const Position& position)
 }
 
 template <int ROWS, int COLUMNS>
-void AddValidPosition(const Position& position, PositionSet& positions)
-{
-  if (IsValid<ROWS, COLUMNS>(position))
-    positions.insert(position);
-}
-
-template <int ROWS, int COLUMNS>
-PositionSet ReachablePositions(const Position& position)
-{
-  PositionSet positions;
-  if (ROWS < COLUMNS) {
-    for (int row = 0; row < ROWS; ++row) {
-      if (row == position.row)
-        continue;
-      AddValidPosition<ROWS, COLUMNS>(Position({ row, position.column + position.row - row }), positions);
-      AddValidPosition<ROWS, COLUMNS>(Position({ row, position.column - position.row + row }), positions);
-    }
-  }
-  else {
-    for (int column = 0; column < COLUMNS; ++column) {
-      if (column == position.column)
-        continue;
-      AddValidPosition<ROWS, COLUMNS>(Position({ position.row + position.column - column, column }), positions);
-      AddValidPosition<ROWS, COLUMNS>(Position({ position.row - position.column + column, column }), positions);
-    }
-  }
-
-  return positions;
-}
-
-template <int ROWS, int COLUMNS>
 class Board
 {
 public:
   Board();
 
+  bool IsThreatened(const Position& position, const Loper& loper) const;
+  bool IsFree(const Position& position) const { return lopers.find(position) == lopers.end(); }
   std::optional<Loper> GetLoper(const Position& position) const;
   bool PlaceLoper(const Loper& loper, const Position& from, const Position& to);
   void ClearLoper(const Position& position);
   void SetLoper(const Position& position, const Loper& loper);
-  PositionSet OpenPositions(const Position& from) const;
+  PositionSet ReachablePositions(const Position& position, const Loper& loper) const;
+  void Clear() { lopers.clear(); }
 
   //LoperMap GetLopers() const;
-  LoperMap GetLopers(Loper::Colour colour) const;
+  LoperMap GetLopers() const;
 
   bool operator<(const Board<ROWS, COLUMNS>& rhs) const { return lopers < rhs.lopers; }
   bool operator==(const Board<ROWS, COLUMNS>& rhs) const { return lopers == rhs.lopers; }
@@ -104,16 +76,10 @@ inline bool Board<ROWS, COLUMNS>::PlaceLoper(const Loper& loper, const Position&
   if (loperTo)
     return false;
 
-  PositionSet positions(ReachablePositions<ROWS, COLUMNS>(to));
+  PositionSet positions(ReachablePositions(to, *loperFrom));
 
-  for (const auto position : positions) {
-    auto result = std::find(positions.begin(), positions.end(), position);
-    if (position != from) {
-      auto optionalLoper(GetLoper(position));
-      if (optionalLoper && optionalLoper->colour != loper.colour)
-        return false;
-    }
-  }
+  if (IsThreatened(to, *loperFrom))
+    return false;
 
   ClearLoper(from);
   lopers[to] = loper;
@@ -140,30 +106,98 @@ inline void Board<ROWS, COLUMNS>::SetLoper(const Position& position, const Loper
   lopers[position] = loper;
 }
 
-template<int ROWS, int COLUMNS>
-inline PositionSet Board<ROWS, COLUMNS>::OpenPositions(const Position& from) const
+template <int ROWS, int COLUMNS>
+inline bool Board<ROWS, COLUMNS>::IsThreatened(const Position& position, const Loper& loper) const
 {
-  PositionSet openPositions;
-  PositionSet positions(ReachablePositions<ROWS, COLUMNS>(from));
-  for (const auto& position : positions)
-    if (!GetLoper(position))
-      openPositions.insert(position);
+  for (const auto& otherLoper : lopers) {
+    if (otherLoper.second.colour == loper.colour)
+      continue;
 
-  return openPositions;
+    PositionSet otherPositions(ReachablePositions(otherLoper.first, otherLoper.second));
+    if (otherPositions.find(position) != otherPositions.end())
+      return true;
+  }
+
+  return false;
 }
 
-//template<int ROWS, int COLUMNS>
-//LoperMap Board<ROWS, COLUMNS>::GetLopers() const
-//{
-//  return lopers;
-//}
+template <int ROWS, int COLUMNS>
+inline PositionSet Board<ROWS, COLUMNS>::ReachablePositions(const Position& position, const Loper& loper) const
+{
+  PositionSet positions;
+  if (ROWS < COLUMNS) {
+    for (int row = position.row - 1; row >= 0; --row) {
+      Position toAdd({ row, position.column + position.row - row });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+    for (int row = position.row - 1; row >= 0; --row) {
+      Position toAdd({ row, position.column - position.row + row });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+    for (int row = position.row + 1; row < ROWS; ++row) {
+      Position toAdd({ row, position.column + position.row - row });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+    for (int row = position.row + 1; row < ROWS; ++row) {
+      Position toAdd({ row, position.column - position.row + row });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+        
+      std::optional<Loper> otherloper(GetLoper(toAdd));
+      if (otherloper && otherloper->colour != loper.colour)
+        break;
+
+      positions.insert(toAdd);
+    }
+  }
+  else {
+    for (int column = position.column - 1; column >= 0; --column) {
+      Position toAdd({ position.row + position.column - column, column });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+
+    for (int column = position.column - 1; column >= 0; --column) {
+      Position toAdd({ position.row - position.column + column, column });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+
+    for (int column = position.column + 1; column < COLUMNS; ++column) {
+      Position toAdd({ position.row + position.column - column, column });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+
+    for (int column = position.column + 1; column < COLUMNS; ++column) {
+      Position toAdd({ position.row - position.column + column, column });
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+        break;
+
+      positions.insert(toAdd);
+    }
+  }
+
+  return positions;
+}
 
 template<int ROWS, int COLUMNS>
-LoperMap Board<ROWS, COLUMNS>::GetLopers(Loper::Colour colour) const
+LoperMap Board<ROWS, COLUMNS>::GetLopers() const
 {
-  LoperMap map;
-  for (const auto& loper : lopers)
-    if (loper.second.colour == colour)
-      map[loper.first] = loper.second;
-  return map;
+  return lopers;
 }
