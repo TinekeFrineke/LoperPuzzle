@@ -20,7 +20,7 @@ bool SolvePuzzle(Puzzle& puzzle, Puzzle::Moves& moves)
   for (int i = 4; i < 100; ++i) {
     try {
       moves.clear();
-      Puzzle::LoperBoardMoves alreadyDone;
+      Puzzle::MyBoardMoves alreadyDone;
       alreadyDone[puzzle.GetStart()] = 0;
 
       if (puzzle.Solve(alreadyDone, moves, i)) {
@@ -43,20 +43,20 @@ bool SolvePuzzle(Puzzle& puzzle, Puzzle::Moves& moves)
 
 int main()
 {
-  Puzzle::LoperBoard startboard;
-  Puzzle::LoperBoard targetboard;
+  Puzzle::MyBoard startboard;
+  Puzzle::MyBoard targetboard;
 
-  startboard.SetLoper(Position({ 0, 0 }), loper::Colour::Black);
-  startboard.SetLoper(Position({ 2, 0 }), loper::Colour::Black);
+  startboard.SetPiece(Position({ 0, 0 }), loper::Colour::Black);
+  startboard.SetPiece(Position({ 2, 0 }), loper::Colour::Black);
 
-  startboard.SetLoper(Position({ 0, 4 }), loper::Colour::White);
-  startboard.SetLoper(Position({ 2, 4 }), loper::Colour::White);
+  startboard.SetPiece(Position({ 0, 4 }), loper::Colour::White);
+  startboard.SetPiece(Position({ 2, 4 }), loper::Colour::White);
 
-  targetboard.SetLoper(Position({ 0, 0 }), loper::Colour::White);
-  targetboard.SetLoper(Position({ 2, 0 }), loper::Colour::White);
+  targetboard.SetPiece(Position({ 0, 0 }), loper::Colour::White);
+  targetboard.SetPiece(Position({ 2, 0 }), loper::Colour::White);
 
-  targetboard.SetLoper(Position({ 0, 4 }), loper::Colour::Black);
-  targetboard.SetLoper(Position({ 2, 4 }), loper::Colour::Black);
+  targetboard.SetPiece(Position({ 0, 4 }), loper::Colour::Black);
+  targetboard.SetPiece(Position({ 2, 4 }), loper::Colour::Black);
 
   Puzzle puzzle(startboard, targetboard);
   Puzzle::Moves moves;
@@ -66,17 +66,17 @@ int main()
   targetboard.Clear();
 
   // Part 2:
-  startboard.SetLoper(Position({ 1, 0 }), loper::Colour::Black);
-  startboard.SetLoper(Position({ 3, 0 }), loper::Colour::Black);
+  startboard.SetPiece(Position({ 1, 0 }), loper::Colour::Black);
+  startboard.SetPiece(Position({ 3, 0 }), loper::Colour::Black);
 
-  startboard.SetLoper(Position({ 1, 4 }), loper::Colour::White);
-  startboard.SetLoper(Position({ 3, 4 }), loper::Colour::White);
+  startboard.SetPiece(Position({ 1, 4 }), loper::Colour::White);
+  startboard.SetPiece(Position({ 3, 4 }), loper::Colour::White);
 
-  targetboard.SetLoper(Position({ 1, 0 }), loper::Colour::White);
-  targetboard.SetLoper(Position({ 3, 0 }), loper::Colour::White);
+  targetboard.SetPiece(Position({ 1, 0 }), loper::Colour::White);
+  targetboard.SetPiece(Position({ 3, 0 }), loper::Colour::White);
   
-  targetboard.SetLoper(Position({ 1, 4 }), loper::Colour::Black);
-  targetboard.SetLoper(Position({ 3, 4 }), loper::Colour::Black);
+  targetboard.SetPiece(Position({ 1, 4 }), loper::Colour::Black);
+  targetboard.SetPiece(Position({ 3, 4 }), loper::Colour::Black);
 
   puzzle.SetStart(startboard);
   puzzle.SetTarget(targetboard);

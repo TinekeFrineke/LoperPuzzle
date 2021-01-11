@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="Interface\LoperLibrary\Board.h" />
     <ClInclude Include="Interface\LoperLibrary\Loper.h" />
+    <ClInclude Include="Interface\LoperLibrary\LoperBoard.h" />
     <ClInclude Include="Interface\LoperLibrary\LoperMap.h" />
     <ClInclude Include="Interface\LoperLibrary\Puzzle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Loper.cpp" />
+    <ClCompile Include="Source\LoperBoard.cpp" />
     <ClCompile Include="Source\Puzzle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

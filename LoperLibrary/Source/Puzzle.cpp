@@ -20,18 +20,18 @@ bool Puzzle::Move::operator==(const Move& move) const
 }
 
 
-Puzzle::Puzzle(const LoperBoard& start, const LoperBoard& target)
+Puzzle::Puzzle(const MyBoard& start, const MyBoard& target)
 {
   SetStart(start);
   SetTarget(target);
 }
 
-void Puzzle::SetStart(const LoperBoard& board)
+void Puzzle::SetStart(const MyBoard& board)
 {
   startboard = board;
 }
 
-void Puzzle::SetTarget(const LoperBoard& board)
+void Puzzle::SetTarget(const MyBoard& board)
 {
   targetboard = board;
 }
@@ -52,7 +52,7 @@ bool Puzzle::Solve()
 {
   for (int i = 4; i < 100; ++i) {
     try {
-      LoperBoardMoves alreadyDone;
+      MyBoardMoves alreadyDone;
       Moves moves;
       alreadyDone[startboard] = 0;
 
@@ -87,9 +87,9 @@ White bisshop from row 1 col 3 to row 0 col 4
 White bisshop from row 0 col 4 to row 3 col 1
 */
 
-bool Puzzle::Solve(LoperBoardMoves& alreadyDone, Moves& moves, const unsigned int maxdepth)
+bool Puzzle::Solve(MyBoardMoves& alreadyDone, Moves& moves, const unsigned int maxdepth)
 {
-  LoperMap lopers(startboard.GetLopers());
+  LoperMap lopers(startboard.GetPieces());
   for (const auto& loper : lopers) {
     PositionSet positions(startboard.ReachablePositions(loper.first, loper.second));
     for (const auto& position : positions) {
