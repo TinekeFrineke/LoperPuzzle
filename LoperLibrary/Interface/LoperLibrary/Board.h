@@ -22,16 +22,15 @@ class Board
 public:
   Board();
 
-  bool IsThreatened(const Position& position, const Loper& loper) const;
+  bool IsThreatened(const Position& position, loper::Colour loper) const;
   bool IsFree(const Position& position) const { return lopers.find(position) == lopers.end(); }
-  std::optional<Loper> GetLoper(const Position& position) const;
-  bool PlaceLoper(const Loper& loper, const Position& from, const Position& to);
+  std::optional<loper::Colour> GetLoper(const Position& position) const;
+  bool PlaceLoper(loper::Colour loper, const Position& from, const Position& to);
   void ClearLoper(const Position& position);
-  void SetLoper(const Position& position, const Loper& loper);
-  PositionSet ReachablePositions(const Position& position, const Loper& loper) const;
+  void SetLoper(const Position& position, loper::Colour loper);
+  PositionSet ReachablePositions(const Position& position, loper::Colour loper) const;
   void Clear() { lopers.clear(); }
 
-  //LoperMap GetLopers() const;
   LoperMap GetLopers() const;
 
   bool operator<(const Board<ROWS, COLUMNS>& rhs) const { return lopers < rhs.lopers; }
@@ -48,31 +47,31 @@ inline Board<ROWS, COLUMNS>::Board()
 }
 
 template <int ROWS, int COLUMNS>
-inline std::optional<Loper> Board<ROWS, COLUMNS>::GetLoper(const Position& position) const
+inline std::optional<loper::Colour> Board<ROWS, COLUMNS>::GetLoper(const Position& position) const
 {
   if (!IsValid<ROWS, COLUMNS>(position))
     throw std::runtime_error("row or clum out of range");
 
   auto iter = lopers.find(position);
   if (iter == lopers.end())
-    return std::optional<Loper>();
+    return std::optional<loper::Colour>();
 
   return iter->second;
 }
 
 template <int ROWS, int COLUMNS>
-inline bool Board<ROWS, COLUMNS>::PlaceLoper(const Loper& loper, const Position& from, const Position& to)
+inline bool Board<ROWS, COLUMNS>::PlaceLoper(loper::Colour loper, const Position& from, const Position& to)
 {
   if (!IsValid<ROWS, COLUMNS>(from))
     throw std::runtime_error("from: row or clum out of range");
   if (!IsValid<ROWS, COLUMNS>(to))
     throw std::runtime_error("from: row or clum out of range");
 
-  std::optional<Loper> loperFrom = GetLoper(from);
+  std::optional<loper::Colour> loperFrom = GetLoper(from);
   if (!loperFrom)
     throw std::runtime_error("loper not found");
 
-  std::optional<Loper> loperTo = GetLoper(to);
+  std::optional<loper::Colour> loperTo = GetLoper(to);
   if (loperTo)
     return false;
 
@@ -98,7 +97,7 @@ inline void Board<ROWS, COLUMNS>::ClearLoper(const Position& position)
 }
 
 template <int ROWS, int COLUMNS>
-inline void Board<ROWS, COLUMNS>::SetLoper(const Position& position, const Loper& loper)
+inline void Board<ROWS, COLUMNS>::SetLoper(const Position& position, loper::Colour loper)
 {
   if (lopers.find(position) != lopers.end())
     throw std::runtime_error("position is not empty");
@@ -107,10 +106,10 @@ inline void Board<ROWS, COLUMNS>::SetLoper(const Position& position, const Loper
 }
 
 template <int ROWS, int COLUMNS>
-inline bool Board<ROWS, COLUMNS>::IsThreatened(const Position& position, const Loper& loper) const
+inline bool Board<ROWS, COLUMNS>::IsThreatened(const Position& position, loper::Colour loper) const
 {
   for (const auto& otherLoper : lopers) {
-    if (otherLoper.second.colour == loper.colour)
+    if (otherLoper.second == loper)
       continue;
 
     PositionSet otherPositions(ReachablePositions(otherLoper.first, otherLoper.second));
@@ -122,7 +121,7 @@ inline bool Board<ROWS, COLUMNS>::IsThreatened(const Position& position, const L
 }
 
 template <int ROWS, int COLUMNS>
-inline PositionSet Board<ROWS, COLUMNS>::ReachablePositions(const Position& position, const Loper& loper) const
+inline PositionSet Board<ROWS, COLUMNS>::ReachablePositions(const Position& position, loper::Colour loper) const
 {
   PositionSet positions;
   if (ROWS < COLUMNS) {
@@ -152,8 +151,8 @@ inline PositionSet Board<ROWS, COLUMNS>::ReachablePositions(const Position& posi
       if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
         break;
         
-      std::optional<Loper> otherloper(GetLoper(toAdd));
-      if (otherloper && otherloper->colour != loper.colour)
+      std::optional<loper::Colour> otherloper(GetLoper(toAdd));
+      if (otherloper && *otherloper != loper)
         break;
 
       positions.insert(toAdd);
