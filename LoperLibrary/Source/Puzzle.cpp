@@ -1,3 +1,4 @@
+
 #include "Puzzle.h"
 
 #include <iostream>
@@ -97,8 +98,8 @@ bool Puzzle::Solve(MyBoardMoves& alreadyDone, Moves& moves, const unsigned int m
       if (MakeMove(move)) {
         auto findResult(alreadyDone.find(startboard));
         if (findResult != alreadyDone.end()) {
-          if (findResult->second > (int)moves.size() + 1) {
-            findResult->second = (int)moves.size() + 1;
+          if (findResult->second > moves.size() + 1) {
+            findResult->second = moves.size() + 1;
           }
           else {
             UndoMove(move);

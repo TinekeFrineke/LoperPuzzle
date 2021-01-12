@@ -14,7 +14,7 @@ public:
   using MyBoard = LoperBoard<4, 5>;
 
   using MyBoardSet = std::set<MyBoard>;
-  using MyBoardMoves = std::map<MyBoard, int>;
+  using MyBoardMoves = std::map<MyBoard, size_t>;
 
   Puzzle(const MyBoard& start, const MyBoard& target);
 
