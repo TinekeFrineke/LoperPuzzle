@@ -1,12 +1,17 @@
 #pragma once
 
-namespace knight
-{
+#include <array>
 
-// Fixed means: not really part of the board. Use it to
-// create an irregular board
-enum class Colour { White, Black, Fixed };
+#include "Position.h"
 
-Position 
+class Knight {
+public:
+  // Fixed means: not really part of the board. Use it to
+  // create an irregular board
+  enum class Colour { White, Black, Fixed };
 
-} // namespace knight
+  static PositionSet GetPossibleTargetPositions(const Position& currentPositon);
+
+private:
+  Colour colour;
+};

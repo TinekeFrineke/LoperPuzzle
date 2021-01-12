@@ -8,8 +8,6 @@
 
 #include "Position.h"
 
-using PositionSet = std::set<Position>;
-
 template <int ROWS, int COLUMNS>
 bool IsValid(const Position& position)
 {

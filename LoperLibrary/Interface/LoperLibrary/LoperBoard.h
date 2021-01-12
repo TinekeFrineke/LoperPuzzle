@@ -65,7 +65,7 @@ inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position&
   if (ROWS < COLUMNS) {
     for (int row = position.row - 1; row >= 0; --row) {
       Position toAdd({ row, position.column + position.row - row });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Board<loper::Colour, ROWS, COLUMNS>::IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
         break;
 
       positions.insert(toAdd);

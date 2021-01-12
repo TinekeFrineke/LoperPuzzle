@@ -28,6 +28,7 @@
     <ClInclude Include="Interface\LoperLibrary\Puzzle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Knight.cpp" />
     <ClCompile Include="Source\Puzzle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

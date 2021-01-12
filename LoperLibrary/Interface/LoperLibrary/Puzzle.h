@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "KnightBoard.h"
 #include "LoperBoard.h"
 
 
