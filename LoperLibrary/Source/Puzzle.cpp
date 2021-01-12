@@ -39,12 +39,12 @@ void Puzzle::SetTarget(const MyBoard& board)
 
 bool Puzzle::MakeMove(const Move& move)
 {
-  return startboard.PlaceLoper(move.loper, move.from, move.to);
+  return startboard.Place(move.loper, move.from, move.to);
 }
 
 bool Puzzle::UndoMove(const Move& move)
 {
-  return startboard.PlaceLoper(move.loper, move.to, move.from);
+  return startboard.Place(move.loper, move.to, move.from);
 }
 
 

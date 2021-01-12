@@ -8,16 +8,17 @@ template <int ROWS, int COLUMNS>
 class LoperBoard : public Board<loper::Colour, ROWS, COLUMNS>
 {
 public:
-  bool IsThreatened(const Position& position, loper::Colour loper) const;
-  bool PlaceLoper(loper::Colour loper, const Position& from, const Position& to);
-  PositionSet ReachablePositions(const Position& position, loper::Colour loper) const;
+  bool Place(const loper::Colour& loper, const Position& from, const Position& to) override;
+  PositionSet ReachablePositions(const Position& position, const loper::Colour& loper) const override;
+
+  bool IsThreatened(const Position& position, const loper::Colour& loper) const;
 
   using Board<loper::Colour, ROWS, COLUMNS>::GetPiece;
   using Board<loper::Colour, ROWS, COLUMNS>::IsFree;
 };
 
 template <int ROWS, int COLUMNS>
-inline bool LoperBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, loper::Colour loper) const
+inline bool LoperBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, const loper::Colour& loper) const
 {
   for (const auto& otherLoper : Board<loper::Colour, ROWS, COLUMNS>::GetPieces()) {
     if (otherLoper.second == loper)
@@ -32,12 +33,12 @@ inline bool LoperBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, lo
 }
 
 template <int ROWS, int COLUMNS>
-inline bool LoperBoard<ROWS, COLUMNS>::PlaceLoper(loper::Colour loper, const Position& from, const Position& to)
+inline bool LoperBoard<ROWS, COLUMNS>::Place(const loper::Colour& loper, const Position& from, const Position& to)
 {
   if (!IsValid<ROWS, COLUMNS>(from))
-    throw std::runtime_error("from: row or clum out of range");
+    throw std::runtime_error("from: invalid position");
   if (!IsValid<ROWS, COLUMNS>(to))
-    throw std::runtime_error("from: row or clum out of range");
+    throw std::runtime_error("to: invalid position");
 
   std::optional<loper::Colour> loperFrom = Board<loper::Colour, ROWS, COLUMNS>::GetPiece(from);
   if (!loperFrom)
@@ -59,7 +60,7 @@ inline bool LoperBoard<ROWS, COLUMNS>::PlaceLoper(loper::Colour loper, const Pos
 }
 
 template <int ROWS, int COLUMNS>
-inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position& position, loper::Colour loper) const
+inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position& position, const loper::Colour& loper) const
 {
   PositionSet positions;
   if (ROWS < COLUMNS) {
