@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Interface\LoperLibrary\LoperMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Interface\LoperLibrary\Puzzle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -30,15 +27,18 @@
     <ClInclude Include="Interface\LoperLibrary\LoperBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\LoperLibrary\Knight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\LoperLibrary\KnightBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\LoperLibrary\Position.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Loper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Puzzle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoperBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

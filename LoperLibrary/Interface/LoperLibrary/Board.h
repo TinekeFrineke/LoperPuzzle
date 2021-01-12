@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "LoperMap.h"
+#include "Position.h"
 
 using PositionSet = std::set<Position>;
 
