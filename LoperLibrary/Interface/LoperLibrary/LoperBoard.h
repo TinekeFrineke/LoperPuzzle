@@ -13,8 +13,7 @@ public:
 
   bool IsThreatened(const Position& position, const loper::Colour& loper) const;
 
-  using Board<loper::Colour, ROWS, COLUMNS>::GetPiece;
-  using Board<loper::Colour, ROWS, COLUMNS>::IsFree;
+  using Parent = Board<loper::Colour, ROWS, COLUMNS>;
 };
 
 template <int ROWS, int COLUMNS>
@@ -35,10 +34,8 @@ inline bool LoperBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, co
 template <int ROWS, int COLUMNS>
 inline bool LoperBoard<ROWS, COLUMNS>::Place(const loper::Colour& loper, const Position& from, const Position& to)
 {
-  if (!IsValid<ROWS, COLUMNS>(from))
-    throw std::runtime_error("from: invalid position");
-  if (!IsValid<ROWS, COLUMNS>(to))
-    throw std::runtime_error("to: invalid position");
+  Parent::AssertValid(from);
+  Parent::AssertValid(to);
 
   std::optional<loper::Colour> loperFrom = Board<loper::Colour, ROWS, COLUMNS>::GetPiece(from);
   if (!loperFrom)
@@ -53,8 +50,8 @@ inline bool LoperBoard<ROWS, COLUMNS>::Place(const loper::Colour& loper, const P
   if (IsThreatened(to, *loperFrom))
     return false;
 
-  Board<loper::Colour, ROWS, COLUMNS>::Clear(from);
-  Board<loper::Colour, ROWS, COLUMNS>::GetPiecesReference()[to] = loper;
+  Parent::Clear(from);
+  Parent::GetPiecesReference()[to] = loper;
 
   return true;
 }
@@ -66,32 +63,28 @@ inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position&
   if (ROWS < COLUMNS) {
     for (int row = position.row - 1; row >= 0; --row) {
       Position toAdd({ row, position.column + position.row - row });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
     }
     for (int row = position.row - 1; row >= 0; --row) {
       Position toAdd({ row, position.column - position.row + row });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
     }
     for (int row = position.row + 1; row < ROWS; ++row) {
       Position toAdd({ row, position.column + position.row - row });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
     }
     for (int row = position.row + 1; row < ROWS; ++row) {
       Position toAdd({ row, position.column - position.row + row });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
-        break;
-
-      std::optional<loper::Colour> otherloper(GetPiece(toAdd));
-      if (otherloper && *otherloper != loper)
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
@@ -100,7 +93,7 @@ inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position&
   else {
     for (int column = position.column - 1; column >= 0; --column) {
       Position toAdd({ position.row + position.column - column, column });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
@@ -108,7 +101,7 @@ inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position&
 
     for (int column = position.column - 1; column >= 0; --column) {
       Position toAdd({ position.row - position.column + column, column });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
@@ -116,7 +109,7 @@ inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position&
 
     for (int column = position.column + 1; column < COLUMNS; ++column) {
       Position toAdd({ position.row + position.column - column, column });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);
@@ -124,7 +117,7 @@ inline PositionSet LoperBoard<ROWS, COLUMNS>::ReachablePositions(const Position&
 
     for (int column = position.column + 1; column < COLUMNS; ++column) {
       Position toAdd({ position.row - position.column + column, column });
-      if (!IsValid<ROWS, COLUMNS>(toAdd) || !IsFree(toAdd))
+      if (!IsValid<ROWS, COLUMNS>(toAdd) || !Parent::IsFree(toAdd))
         break;
 
       positions.insert(toAdd);

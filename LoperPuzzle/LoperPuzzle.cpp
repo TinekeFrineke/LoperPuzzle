@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-#include "LoperLibrary/Puzzle.h"
+#include "LoperLibrary/LoperPuzzle.h"
 
 namespace
 {
-void Print(const Puzzle::Moves& moves)
+void Print(const loper::Puzzle::Moves& moves)
 {
   for (const auto& move : moves)
     std::cout << (move.loper == loper::Colour::White ? "White" : "Black")
@@ -15,12 +15,12 @@ void Print(const Puzzle::Moves& moves)
     << " to row " << move.to.row << " col " << move.to.column << std::endl;
 }
 
-bool SolvePuzzle(Puzzle& puzzle, Puzzle::Moves& moves)
+bool SolvePuzzle(loper::Puzzle& puzzle, loper::Puzzle::Moves& moves)
 {
   for (int i = 4; i < 100; ++i) {
     try {
       moves.clear();
-      Puzzle::MyBoardMoves alreadyDone;
+      loper::Puzzle::MyBoardMoves alreadyDone;
       alreadyDone[puzzle.GetStart()] = 0;
 
       if (puzzle.Solve(alreadyDone, moves, i)) {
@@ -43,8 +43,8 @@ bool SolvePuzzle(Puzzle& puzzle, Puzzle::Moves& moves)
 
 int main()
 {
-  Puzzle::MyBoard startboard;
-  Puzzle::MyBoard targetboard;
+  loper::Puzzle::MyBoard startboard;
+  loper::Puzzle::MyBoard targetboard;
 
   startboard.SetPiece(Position({ 0, 0 }), loper::Colour::Black);
   startboard.SetPiece(Position({ 2, 0 }), loper::Colour::Black);
@@ -58,8 +58,8 @@ int main()
   targetboard.SetPiece(Position({ 0, 4 }), loper::Colour::Black);
   targetboard.SetPiece(Position({ 2, 4 }), loper::Colour::Black);
 
-  Puzzle puzzle(startboard, targetboard);
-  Puzzle::Moves moves;
+  loper::Puzzle puzzle(startboard, targetboard);
+  loper::Puzzle::Moves moves;
   SolvePuzzle(puzzle, moves);
 
   startboard.Clear();

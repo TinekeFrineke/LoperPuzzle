@@ -32,6 +32,7 @@ public:
   void Clear(const Position& position);
   void SetPiece(const Position& position, PIECE piece);
   void Clear() { pieces.clear(); }
+  void AssertValid(const Position& position);
 
   PieceMap GetPieces() const;
 
@@ -41,6 +42,7 @@ public:
 
 protected:
   PieceMap& GetPiecesReference() { return pieces; }
+
 private:
   PieceMap pieces;
 };
@@ -80,6 +82,13 @@ inline void Board<PIECE, ROWS, COLUMNS>::SetPiece(const Position& position, PIEC
     throw std::runtime_error("position is not empty");
 
   pieces[position] = piece;
+}
+
+template<typename PIECE, int ROWS, int COLUMNS>
+inline void Board<PIECE, ROWS, COLUMNS>::AssertValid(const Position& position)
+{
+  if (!IsValid<ROWS, COLUMNS>(position))
+    throw std::runtime_error("row or column out of range");
 }
 
 template<typename PIECE, int ROWS, int COLUMNS>

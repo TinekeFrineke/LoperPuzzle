@@ -3,12 +3,12 @@
 
 #include <iostream>
 
-#include "LoperLibrary/Puzzle.h"
+#include "LoperLibrary/LoperPuzzle.h"
 #include <cassert>
 
 namespace
 {
-void Print(const Puzzle::Moves& moves)
+void Print(const loper::Puzzle::Moves& moves)
 {
   for (const auto& move : moves)
     std::cout << (move.loper == loper::Colour::White ? "White" : "Black")
@@ -16,12 +16,12 @@ void Print(const Puzzle::Moves& moves)
     << " to row " << move.to.row << " col " << move.to.column << std::endl;
 }
 
-bool SolvePuzzle(Puzzle& puzzle, Puzzle::Moves& moves)
+bool SolvePuzzle(loper::Puzzle& puzzle, loper::Puzzle::Moves& moves)
 {
   for (int i = 4; i < 100; ++i) {
     try {
       moves.clear();
-      Puzzle::MyBoardMoves alreadyDone;
+      loper::Puzzle::MyBoardMoves alreadyDone;
       alreadyDone[puzzle.GetStart()] = 0;
 
       if (puzzle.Solve(alreadyDone, moves, i)) {
@@ -43,8 +43,8 @@ bool SolvePuzzle(Puzzle& puzzle, Puzzle::Moves& moves)
 
 void Test1()
 {
-  Puzzle::MyBoard startboard;
-  Puzzle::MyBoard targetboard;
+  loper::Puzzle::MyBoard startboard;
+  loper::Puzzle::MyBoard targetboard;
 
   startboard.SetPiece(Position({ 0, 0 }), loper::Colour::Black);
   startboard.SetPiece(Position({ 2, 0 }), loper::Colour::Black);
@@ -58,16 +58,16 @@ void Test1()
   targetboard.SetPiece(Position({ 1, 1 }), loper::Colour::Black);
   targetboard.SetPiece(Position({ 3, 3 }), loper::Colour::Black);
 
-  Puzzle puzzle(startboard, targetboard);
-  Puzzle::Moves moves;
+  loper::Puzzle puzzle(startboard, targetboard);
+  loper::Puzzle::Moves moves;
   const bool solved(SolvePuzzle(puzzle, moves));
   assert(solved);
 
   assert(moves.size() == 4);
-  assert(moves[0] == Puzzle::Move({ loper::Colour::White, Position({2, 4}), Position({1, 3}) }));
-  assert(moves[1] == Puzzle::Move({ loper::Colour::Black, Position({0, 0}), Position({3, 3}) }));
-  assert(moves[2] == Puzzle::Move({ loper::Colour::Black, Position({2, 0}), Position({1, 1}) }));
-  assert(moves[3] == Puzzle::Move({ loper::Colour::White, Position({1, 3}), Position({3, 1}) }));
+  assert(moves[0] == loper::Puzzle::Move({ loper::Colour::White, Position({2, 4}), Position({1, 3}) }));
+  assert(moves[1] == loper::Puzzle::Move({ loper::Colour::Black, Position({0, 0}), Position({3, 3}) }));
+  assert(moves[2] == loper::Puzzle::Move({ loper::Colour::Black, Position({2, 0}), Position({1, 1}) }));
+  assert(moves[3] == loper::Puzzle::Move({ loper::Colour::White, Position({1, 3}), Position({3, 1}) }));
 }
 }
 

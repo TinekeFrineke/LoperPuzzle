@@ -6,10 +6,11 @@
 #include "LoperBoard.h"
 
 
-class Puzzle
+namespace loper
 {
+class Puzzle {
 public:
-  struct Move { loper::Colour loper; Position from; Position to; bool operator==(const Move& move) const; };
+  struct Move { Colour loper; Position from; Position to; bool operator==(const Move& move) const; };
   using Moves = std::vector<Move>;
 
   using MyBoard = LoperBoard<4, 5>;
@@ -26,7 +27,7 @@ public:
   MyBoard GetTarget() const { return targetboard; }
 
   bool MakeMove(const Move& move);
-  bool Solve();
+  bool Solve(int minimumIterations, int maximumIterations);
   bool Solve(MyBoardMoves& alreadyDone, Moves& moves, const unsigned int maxdepth);
 
 private:
@@ -35,3 +36,4 @@ private:
   MyBoard startboard;
   MyBoard targetboard;
 };
+} // namespace loper

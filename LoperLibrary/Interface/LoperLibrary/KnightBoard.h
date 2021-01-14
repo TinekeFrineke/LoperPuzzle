@@ -3,31 +3,35 @@
 #include "Board.h"
 #include "Knight.h"
 
+
 template <int ROWS, int COLUMNS>
 class KnightBoard : public Board<Knight, ROWS, COLUMNS> {
 public:
-  bool Place(const Knight& knight, const Position& from, const Position& to);
-  PositionSet ReachablePositions(const Position& position, const Knight& knight) const;
+  bool IsThreatened(const Position& position, const Knight& piece) const override;
+  bool Place(const Knight& knight, const Position& from, const Position& to) override;
+  PositionSet ReachablePositions(const Position& position, const Knight& knight) const override;
 
-  using Board<Knight, ROWS, COLUMNS>::GetPiece;
-  using Board<Knight, ROWS, COLUMNS>::IsFree;
+  using Parent = Board<Knight, ROWS, COLUMNS>;
 };
+
+template<int ROWS, int COLUMNS>
+inline bool KnightBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, const Knight& piece) const {
+  return false;
+}
 
 template <int ROWS, int COLUMNS>
 inline bool KnightBoard<ROWS, COLUMNS>::Place(const Knight& knight, const Position& from, const Position& to) {
-  if (!IsValid<ROWS, COLUMNS>(from))
-    throw std::runtime_error("from: row or clum out of range");
-  if (!IsValid<ROWS, COLUMNS>(to))
-    throw std::runtime_error("from: row or clum out of range");
+  Parent::AssertValid(from);
+  Parent::AssertValid(to);
 
-  if (IsFree(from))
+  if (Parent::IsFree(from))
     throw std::runtime_error("knight not found");
 
-  if (!IsFree(to))
+  if (!Parent::IsFree(to))
     return false;
 
-  Board<Knight, ROWS, COLUMNS>::Clear(from);
-  Board<Knight, ROWS, COLUMNS>::GetPiecesReference()[to] = knight;
+  Parent::Clear(from);
+  Parent::GetPiecesReference()[to] = knight;
 
   return true;
 }
@@ -37,7 +41,7 @@ inline PositionSet KnightBoard<ROWS, COLUMNS>::ReachablePositions(const Position
   PositionSet positions(knight.GetPossibleTargetPositions());
   PositionSet reachablePositions;
   for (const auto& position : positions)
-    if (IsValid(position) && IsFree(position))
+    if (IsValid<ROWS, COLUMNS>(position) && Parent::IsFree(position))
       reachablePositions.insert(position);
 
   return reachablePositions;

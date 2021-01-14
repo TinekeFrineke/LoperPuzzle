@@ -25,11 +25,11 @@
     <ClInclude Include="Interface\LoperLibrary\Loper.h" />
     <ClInclude Include="Interface\LoperLibrary\LoperBoard.h" />
     <ClInclude Include="Interface\LoperLibrary\Position.h" />
-    <ClInclude Include="Interface\LoperLibrary\Puzzle.h" />
+    <ClInclude Include="Interface\LoperLibrary\LoperPuzzle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Knight.cpp" />
-    <ClCompile Include="Source\Puzzle.cpp" />
+    <ClCompile Include="Source\LoperPuzzle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

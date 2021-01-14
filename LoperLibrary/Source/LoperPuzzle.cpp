@@ -1,12 +1,12 @@
 
-#include "Puzzle.h"
+#include "LoperPuzzle.h"
 
 #include <iostream>
 
 namespace
 {
 
-void Print(const Puzzle::Moves& moves)
+void Print(const loper::Puzzle::Moves& moves)
 {
   for (const auto& move : moves)
     std::cout << (move.loper == loper::Colour::White ? "White" : "Black")
@@ -15,6 +15,8 @@ void Print(const Puzzle::Moves& moves)
 }
 }
 
+namespace loper
+{
 bool Puzzle::Move::operator==(const Move& move) const
 {
   return loper == move.loper && from == move.from && to == move.to;
@@ -49,9 +51,9 @@ bool Puzzle::UndoMove(const Move& move)
 
 
 static int stacksize = 0;
-bool Puzzle::Solve()
+bool Puzzle::Solve(const int minimumIterations, const int maximumIterations)
 {
-  for (int i = 4; i < 100; ++i) {
+  for (int i = minimumIterations; i <= maximumIterations; ++i) {
     try {
       MyBoardMoves alreadyDone;
       Moves moves;
@@ -88,8 +90,7 @@ White bisshop from row 1 col 3 to row 0 col 4
 White bisshop from row 0 col 4 to row 3 col 1
 */
 
-bool Puzzle::Solve(MyBoardMoves& alreadyDone, Moves& moves, const unsigned int maxdepth)
-{
+bool Puzzle::Solve(MyBoardMoves& alreadyDone, Moves& moves, const unsigned int maxdepth) {
   LoperMap lopers(startboard.GetPieces());
   for (const auto& loper : lopers) {
     PositionSet positions(startboard.ReachablePositions(loper.first, loper.second));
@@ -131,3 +132,4 @@ bool Puzzle::Solve(MyBoardMoves& alreadyDone, Moves& moves, const unsigned int m
 
   return false;
 }
+} // namespace loper
