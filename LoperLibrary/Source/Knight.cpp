@@ -17,11 +17,17 @@ std::array<Move, 8> possibleMoves =
 };
 }
 
-PositionSet Knight::GetPossibleTargetPositions(const Position& currentPositon)
+namespace knight
+{
+PositionSet Knight::GetPossibleTargetPositions(const Position& currentPositon) const
 {
   PositionSet positions;
+  if (colour == Colour::Fixed)
+    return positions;
+
   for (const Move& move : possibleMoves)
     positions.insert(currentPositon + move);
 
   return positions;
 }
+} // namespace knight

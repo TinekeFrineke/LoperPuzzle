@@ -3,7 +3,8 @@
 #include "Board.h"
 #include "Knight.h"
 
-
+namespace knight
+{
 template <int ROWS, int COLUMNS>
 class KnightBoard : public Board<Knight, ROWS, COLUMNS> {
 public:
@@ -38,7 +39,7 @@ inline bool KnightBoard<ROWS, COLUMNS>::Place(const Knight& knight, const Positi
 
 template <int ROWS, int COLUMNS>
 inline PositionSet KnightBoard<ROWS, COLUMNS>::ReachablePositions(const Position& position, const Knight& knight) const {
-  PositionSet positions(knight.GetPossibleTargetPositions());
+  PositionSet positions(knight.GetPossibleTargetPositions(position));
   PositionSet reachablePositions;
   for (const auto& position : positions)
     if (IsValid<ROWS, COLUMNS>(position) && Parent::IsFree(position))
@@ -46,3 +47,4 @@ inline PositionSet KnightBoard<ROWS, COLUMNS>::ReachablePositions(const Position
 
   return reachablePositions;
 }
+} // namespace knight
