@@ -12,13 +12,13 @@ void Print(const loper::Puzzle::Moves& moves)
 {
   for (const auto& move : moves)
     std::cout << (move.loper == loper::Colour::White ? "White" : "Black")
-    << " bisshop from row " << move.from.row << " col " << move.from.column
+    << " knight from row " << move.from.row << " col " << move.from.column
     << " to row " << move.to.row << " col " << move.to.column << std::endl;
 }
 
 bool SolvePuzzle(loper::Puzzle& puzzle, loper::Puzzle::Moves& moves)
 {
-  for (int i = 4; i < 100; ++i) {
+  for (int i = 25; i < 100; ++i) {
     try {
       moves.clear();
       loper::Puzzle::MyBoardMoves alreadyDone;
@@ -41,18 +41,19 @@ bool SolvePuzzle(loper::Puzzle& puzzle, loper::Puzzle::Moves& moves)
   return true;
 }
 
-void Print(const knight::Puzzle::Moves& moves) {
+void Print(const knight::Moves& moves) {
   for (const auto& move : moves)
     std::cout << (move.knight == knight::Colour::White ? "White" : "Black")
     << " bisshop from row " << move.from.row << " col " << move.from.column
     << " to row " << move.to.row << " col " << move.to.column << std::endl;
 }
 
-bool SolvePuzzle(knight::Puzzle& puzzle, knight::Puzzle::Moves& moves) {
-  for (int i = 4; i < 100; ++i) {
+template <int ROWS, int COLUMNS>
+bool SolvePuzzle(knight::Puzzle<ROWS, COLUMNS>& puzzle, knight::Moves& moves) {
+  for (int i = 40; i < 100; ++i) {
     try {
       moves.clear();
-      knight::Puzzle::MyBoardMoves alreadyDone;
+      typename knight::Puzzle<ROWS, COLUMNS>::MyBoardMoves alreadyDone;
       alreadyDone[puzzle.GetStart()] = 0;
 
       if (puzzle.Solve(alreadyDone, moves, i)) {
@@ -117,8 +118,8 @@ void loperPuzzle()
 }
 
 void knightPuzzle() {
-  knight::Puzzle::MyBoard startboard;
-  knight::Puzzle::MyBoard targetboard;
+  knight::Puzzle<4, 4>::MyBoard startboard;
+  knight::Puzzle<4, 4>::MyBoard targetboard;
 
   startboard.SetPiece(Position({ 0, 1 }), knight::Knight(knight::Colour::Fixed));
   startboard.SetPiece(Position({ 0, 2 }), knight::Knight(knight::Colour::Fixed));
@@ -146,8 +147,8 @@ void knightPuzzle() {
   targetboard.SetPiece(Position({ 1, 3 }), knight::Knight(knight::Colour::Black));
   targetboard.SetPiece(Position({ 2, 1 }), knight::Knight(knight::Colour::Black));
 
-  knight::Puzzle puzzle(startboard, targetboard);
-  knight::Puzzle::Moves moves;
+  knight::Puzzle<4, 4> puzzle(startboard, targetboard);
+  knight::Moves moves;
   SolvePuzzle(puzzle, moves);
 }
 

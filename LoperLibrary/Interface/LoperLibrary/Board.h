@@ -23,7 +23,7 @@ public:
   Board();
   virtual ~Board() {}
 
-  virtual bool IsThreatened(const Position& position, const PIECE& piece) const = 0;
+  virtual bool IsSafe(const Position& position, const PIECE& piece) const = 0;
   virtual bool Place(const PIECE& piece, const Position& from, const Position& to) = 0;
   virtual PositionSet ReachablePositions(const Position& position, const PIECE& piece) const = 0;
 

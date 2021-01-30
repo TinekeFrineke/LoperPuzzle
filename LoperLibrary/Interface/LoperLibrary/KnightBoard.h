@@ -5,10 +5,14 @@
 
 namespace knight
 {
+
+struct Move { Colour knight; Position from; Position to; bool operator==(const Move& move) const; };
+using Moves = std::vector<Move>;
+
 template <int ROWS, int COLUMNS>
 class KnightBoard : public Board<Knight, ROWS, COLUMNS> {
 public:
-  bool IsThreatened(const Position& position, const Knight& piece) const override;
+  bool IsSafe(const Position& position, const Knight& piece) const override;
   bool Place(const Knight& knight, const Position& from, const Position& to) override;
   PositionSet ReachablePositions(const Position& position, const Knight& knight) const override;
 
@@ -16,8 +20,8 @@ public:
 };
 
 template<int ROWS, int COLUMNS>
-inline bool KnightBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, const Knight& piece) const {
-  return false;
+inline bool KnightBoard<ROWS, COLUMNS>::IsSafe(const Position& position, const Knight& piece) const {
+  return true;
 }
 
 template <int ROWS, int COLUMNS>

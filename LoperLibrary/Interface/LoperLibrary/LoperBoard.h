@@ -11,9 +11,12 @@ public:
   bool Place(const loper::Colour& loper, const Position& from, const Position& to) override;
   PositionSet ReachablePositions(const Position& position, const loper::Colour& loper) const override;
 
-  bool IsThreatened(const Position& position, const loper::Colour& loper) const;
+  bool IsSafe(const Position& position, const loper::Colour& loper) const override;
 
   using Parent = Board<loper::Colour, ROWS, COLUMNS>;
+
+private:
+  bool IsThreatened(const Position& position, const loper::Colour& loper) const;
 };
 
 template <int ROWS, int COLUMNS>
@@ -32,6 +35,11 @@ inline bool LoperBoard<ROWS, COLUMNS>::IsThreatened(const Position& position, co
 }
 
 template <int ROWS, int COLUMNS>
+inline bool LoperBoard<ROWS, COLUMNS>::IsSafe(const Position& position, const loper::Colour& loper) const {
+  return !IsThreatened(position, loper);
+}
+
+template <int ROWS, int COLUMNS>
 inline bool LoperBoard<ROWS, COLUMNS>::Place(const loper::Colour& loper, const Position& from, const Position& to)
 {
   Parent::AssertValid(from);
@@ -47,7 +55,7 @@ inline bool LoperBoard<ROWS, COLUMNS>::Place(const loper::Colour& loper, const P
 
   PositionSet positions(ReachablePositions(to, *loperFrom));
 
-  if (IsThreatened(to, *loperFrom))
+  if (!IsSafe(to, *loperFrom))
     return false;
 
   Parent::Clear(from);

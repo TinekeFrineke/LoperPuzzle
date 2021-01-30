@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Knight.cpp" />
+    <ClCompile Include="Source\KnightBoard.cpp" />
     <ClCompile Include="Source\KnightPuzzle.cpp" />
     <ClCompile Include="Source\LoperPuzzle.cpp" />
   </ItemGroup>

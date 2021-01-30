@@ -6,10 +6,11 @@
 #include "LoperLibrary/KnightPuzzle.h"
 #include <cassert>
 
+
 void EqualityTest()
 {
-  knight::Puzzle::MyBoard startboard;
-  knight::Puzzle::MyBoard targetboard;
+  knight::Puzzle<4, 4>::MyBoard startboard;
+  knight::Puzzle<4, 4>::MyBoard targetboard;
 
   startboard.SetPiece(Position({ 0, 1 }), knight::Knight(knight::Colour::Fixed));
   startboard.SetPiece(Position({ 0, 2 }), knight::Knight(knight::Colour::Fixed));
@@ -41,8 +42,8 @@ void EqualityTest()
 }
 
 void UnEqualityTest() {
-  knight::Puzzle::MyBoard startboard;
-  knight::Puzzle::MyBoard targetboard;
+  knight::Puzzle<4, 4>::MyBoard startboard;
+  knight::Puzzle<4, 4>::MyBoard targetboard;
 
   startboard.SetPiece(Position({ 0, 1 }), knight::Knight(knight::Colour::Fixed));
   startboard.SetPiece(Position({ 0, 2 }), knight::Knight(knight::Colour::Fixed));
@@ -73,10 +74,33 @@ void UnEqualityTest() {
   assert(!(startboard == targetboard));
 }
 
+void SmallTest()
+{
+  knight::Puzzle<3, 3>::MyBoard startboard;
+  knight::Puzzle<3, 3>::MyBoard targetboard;
+  startboard.SetPiece(Position({ 0, 0 }), knight::Knight(knight::Colour::White));
+  targetboard.SetPiece(Position({ 1, 2 }), knight::Knight(knight::Colour::White));
+
+  knight::Puzzle<3, 3> puzzle(startboard, targetboard);
+  puzzle.Solve(0, 3);
+}
+
+void SmallTest2() {
+  knight::Puzzle<3, 3>::MyBoard startboard;
+  knight::Puzzle<3, 3>::MyBoard targetboard;
+  startboard.SetPiece(Position({ 0, 0 }), knight::Knight(knight::Colour::White));
+  targetboard.SetPiece(Position({ 2, 0 }), knight::Knight(knight::Colour::White));
+
+  knight::Puzzle<3, 3> puzzle(startboard, targetboard);
+  puzzle.Solve(0, 3);
+}
+
 int main()
 {
   EqualityTest();
   UnEqualityTest();
+  SmallTest();
+  SmallTest2();
 
   return 0;
 }
